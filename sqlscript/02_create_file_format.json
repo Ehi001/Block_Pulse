@@ -1,0 +1,17 @@
+{
+	"name": "02_create_file_format",
+	"properties": {
+		"content": {
+			"query": "-- DEFINE FILE FORMAT FOR THE CETAS STATEMENT\nIF NOT EXISTS (\n    SELECT * \n    FROM sys.external_file_formats \n    WHERE name = 'ParquetFileFormat'\n)\n    CREATE EXTERNAL FILE FORMAT ParquetFileFormat\n    WITH (\n        FORMAT_TYPE = PARQUET\n    );",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "blockpulse_db",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

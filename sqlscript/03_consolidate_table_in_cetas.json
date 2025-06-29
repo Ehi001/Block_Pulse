@@ -1,0 +1,17 @@
+{
+	"name": "03_consolidate_table_in_cetas",
+	"properties": {
+		"content": {
+			"query": "-- USE CETAS (create external table as select) to merge and write the result to a single file\n\nCREATE EXTERNAL TABLE [dbo].[block_pulse_crypto_data]\nWITH (\n    LOCATION = \n    'blockpulsecontainer/consolidated_data.parquet',\n    DATA_SOURCE = [block_pulse_datasource],\n    FILE_FORMAT = [ParquetFileFormat]\n)\nAS\nSELECT\n     *\nFROM (\n    SELECT *\n    FROM OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/silver/crypto_metrics_fact_table/part-00000-7598124b-fed1-4259-a5ff-01b797608d0b-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) as consolidated_data\n\n    UNION ALL   \n\n    SELECT\n        *\n    FROM\n        OPENROWSET(\n            BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/silver/crypto_metrics_fact_table/part-00000-5454c7aa-7a8b-4f6a-a332-0cc8c54a862f-c000.snappy.parquet',\n            FORMAT = 'PARQUET'\n        ) as consolidate_data\n\n    UNION ALL \n\n    SELECT\n        *\n    FROM\n        OPENROWSET(\n            BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/crypto_metrics/**',\n            FORMAT = 'PARQUET'\n        ) as consolidated_data\n    ) \nAS combined_data;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "blockpulse_db",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

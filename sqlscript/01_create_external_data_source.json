@@ -1,0 +1,17 @@
+{
+	"name": "01_create_external_data_source",
+	"properties": {
+		"content": {
+			"query": "\n-- DEFINE DATA SOURCE FOR THE CETAS STATEMENT\nIF NOT EXISTS (\n    SELECT * \n    FROM sys.external_data_sources \n    WHERE name = 'block_pulse_datasource'\n)\n    CREATE EXTERNAL DATA SOURCE block_pulse_datasource\n    WITH (\n        LOCATION = 'abfss://blockpulsecontainer@blockpulsestorage.dfs.core.windows.net'\n    );\n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "blockpulse_db",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
