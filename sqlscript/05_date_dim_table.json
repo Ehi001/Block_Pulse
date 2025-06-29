@@ -1,0 +1,17 @@
+{
+	"name": "05_date_dim_table",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/dim_date/part-00003-968c12b4-7ef6-403a-954b-f58bcf7eddf7-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS date_dimension_table\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

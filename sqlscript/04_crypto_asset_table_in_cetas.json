@@ -1,0 +1,17 @@
+{
+	"name": "04_crypto_asset_table_in_cetas",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/crypto_asset/part-00000-d55de179-4dda-4f6a-b116-91f7392c4942-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS crypto_asset_table",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
