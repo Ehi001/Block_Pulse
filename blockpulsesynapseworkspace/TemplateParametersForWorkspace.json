@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "blockpulsesynapseworkspace"
+		},
+		"blockpulsebronzestoragelinkservice_accountKey": {
+			"value": ""
+		},
+		"blockpulsebronzetosilverlinkservice_accessToken": {
+			"value": ""
+		},
+		"blockpulsesilvertogoldlinkservice_accessToken": {
+			"value": ""
+		},
+		"blockpulsesynapseworkspace-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:blockpulsesynapseworkspace.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"blockpulsebronzestoragelinkservice_properties_typeProperties_url": {
+			"value": "https://blockpulsestorage.dfs.core.windows.net/"
+		},
+		"blockpulsesynapseworkspace-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://blockpulsestorage.dfs.core.windows.net"
+		},
+		"coingeckoapilink_properties_typeProperties_url": {
+			"value": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd"
+		}
+	}
+}

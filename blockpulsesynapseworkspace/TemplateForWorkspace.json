@@ -1,0 +1,711 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Workspace name",
+			"defaultValue": "blockpulsesynapseworkspace"
+		},
+		"blockpulsebronzestoragelinkservice_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'blockpulsebronzestoragelinkservice'"
+		},
+		"blockpulsebronzetosilverlinkservice_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'blockpulsebronzetosilverlinkservice'"
+		},
+		"blockpulsesilvertogoldlinkservice_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'blockpulsesilvertogoldlinkservice'"
+		},
+		"blockpulsesynapseworkspace-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'blockpulsesynapseworkspace-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:blockpulsesynapseworkspace.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"blockpulsebronzestoragelinkservice_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blockpulsestorage.dfs.core.windows.net/"
+		},
+		"blockpulsesynapseworkspace-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blockpulsestorage.dfs.core.windows.net"
+		},
+		"coingeckoapilink_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulse_etl_pipeline')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy from coingecko API",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"path": "$['id']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['symbol']"
+										},
+										"sink": {
+											"path": "$['symbol']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"path": "$['name']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['image']"
+										},
+										"sink": {
+											"path": "$['image']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['current_price']"
+										},
+										"sink": {
+											"path": "$['current_price']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['market_cap']"
+										},
+										"sink": {
+											"path": "$['market_cap']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['market_cap_rank']"
+										},
+										"sink": {
+											"path": "$['market_cap_rank']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['fully_diluted_valuation']"
+										},
+										"sink": {
+											"path": "$['fully_diluted_valuation']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['total_volume']"
+										},
+										"sink": {
+											"path": "$['total_volume']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['high_24h']"
+										},
+										"sink": {
+											"path": "$['high_24h']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['low_24h']"
+										},
+										"sink": {
+											"path": "$['low_24h']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['price_change_24h']"
+										},
+										"sink": {
+											"path": "$['price_change_24h']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['price_change_percentage_24h']"
+										},
+										"sink": {
+											"path": "$['price_change_percentage_24h']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['market_cap_change_24h']"
+										},
+										"sink": {
+											"path": "$['market_cap_change_24h']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['market_cap_change_percentage_24h']"
+										},
+										"sink": {
+											"path": "$['market_cap_change_percentage_24h']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['circulating_supply']"
+										},
+										"sink": {
+											"path": "$['circulating_supply']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['total_supply']"
+										},
+										"sink": {
+											"path": "$['total_supply']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['max_supply']"
+										},
+										"sink": {
+											"path": "$['max_supply']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['ath']"
+										},
+										"sink": {
+											"path": "$['ath']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['ath_change_percentage']"
+										},
+										"sink": {
+											"path": "$['ath_change_percentage']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['ath_date']"
+										},
+										"sink": {
+											"path": "$['ath_date']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['atl']"
+										},
+										"sink": {
+											"path": "$['atl']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['atl_change_percentage']"
+										},
+										"sink": {
+											"path": "$['atl_change_percentage']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['atl_date']"
+										},
+										"sink": {
+											"path": "$['atl_date']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['roi']['times']"
+										},
+										"sink": {
+											"path": "$['roi']['times']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['roi']['currency']"
+										},
+										"sink": {
+											"path": "$['roi']['currency']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['roi']['percentage']"
+										},
+										"sink": {
+											"path": "$['roi']['percentage']"
+										}
+									},
+									{
+										"source": {
+											"path": "$['last_updated']"
+										},
+										"sink": {
+											"path": "$['last_updated']"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "coingeckoapidataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "coingeckorawdata",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "bronze_to_silver_transform",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Copy from coingecko API",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/ehidiamen1@gmail.com/blockpulsebronzetosilver_notebook"
+						},
+						"linkedServiceName": {
+							"referenceName": "blockpulsebronzetosilverlinkservice",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "silver_to_gold_transform",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "bronze_to_silver_transform",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/ehidiamen1@gmail.com/blockpulsesilvertogoldworkspace"
+						},
+						"linkedServiceName": {
+							"referenceName": "blockpulsesilvertogoldlinkservice",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-06-21T04:10:16Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/coingeckoapidataset')]",
+				"[concat(variables('workspaceId'), '/datasets/coingeckorawdata')]",
+				"[concat(variables('workspaceId'), '/linkedServices/blockpulsebronzetosilverlinkservice')]",
+				"[concat(variables('workspaceId'), '/linkedServices/blockpulsesilvertogoldlinkservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/coingeckoapidataset')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "coingeckoapilink",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/coingeckoapilink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/coingeckorawdata')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blockpulsebronzestoragelinkservice",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "crypto_data.json",
+						"folderPath": "bronze",
+						"fileSystem": "blockpulsecontainer"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/blockpulsebronzestoragelinkservice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulsebronzestoragelinkservice')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('blockpulsebronzestoragelinkservice_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('blockpulsebronzestoragelinkservice_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulsebronzetosilverlinkservice')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-127101974969090.10.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('blockpulsebronzetosilverlinkservice_accessToken')]"
+					},
+					"existingClusterId": "0615-230952-33qwv6rw"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulsesilvertogoldlinkservice')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-895393119937322.2.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('blockpulsesilvertogoldlinkservice_accessToken')]"
+					},
+					"existingClusterId": "0620-000327-2lfbff07"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulsesynapseworkspace-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('blockpulsesynapseworkspace-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulsesynapseworkspace-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('blockpulsesynapseworkspace-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/coingeckoapilink')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('coingeckoapilink_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/blockpulse_data_pipeline_trigger')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Starts the pipeline",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "blockpulse_etl_pipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2025-06-22T20:00:00",
+						"endTime": "2025-06-29T05:32:00",
+						"timeZone": "Mountain Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/blockpulse_etl_pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/01_create_external_data_source')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "\n-- DEFINE DATA SOURCE FOR THE CETAS STATEMENT\nIF NOT EXISTS (\n    SELECT * \n    FROM sys.external_data_sources \n    WHERE name = 'block_pulse_datasource'\n)\n    CREATE EXTERNAL DATA SOURCE block_pulse_datasource\n    WITH (\n        LOCATION = 'abfss://blockpulsecontainer@blockpulsestorage.dfs.core.windows.net'\n    );\n\n\n\n\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "blockpulse_db",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/02_create_file_format')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- DEFINE FILE FORMAT FOR THE CETAS STATEMENT\nIF NOT EXISTS (\n    SELECT * \n    FROM sys.external_file_formats \n    WHERE name = 'ParquetFileFormat'\n)\n    CREATE EXTERNAL FILE FORMAT ParquetFileFormat\n    WITH (\n        FORMAT_TYPE = PARQUET\n    );",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "blockpulse_db",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/03_consolidate_table_in_cetas')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- USE CETAS (create external table as select) to merge and write the result to a single file\n\nCREATE EXTERNAL TABLE [dbo].[block_pulse_crypto_data]\nWITH (\n    LOCATION = \n    'blockpulsecontainer/consolidated_data.parquet',\n    DATA_SOURCE = [block_pulse_datasource],\n    FILE_FORMAT = [ParquetFileFormat]\n)\nAS\nSELECT\n     *\nFROM (\n    SELECT *\n    FROM OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/silver/crypto_metrics_fact_table/part-00000-7598124b-fed1-4259-a5ff-01b797608d0b-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) as consolidated_data\n\n    UNION ALL   \n\n    SELECT\n        *\n    FROM\n        OPENROWSET(\n            BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/silver/crypto_metrics_fact_table/part-00000-5454c7aa-7a8b-4f6a-a332-0cc8c54a862f-c000.snappy.parquet',\n            FORMAT = 'PARQUET'\n        ) as consolidate_data\n\n    UNION ALL \n\n    SELECT\n        *\n    FROM\n        OPENROWSET(\n            BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/crypto_metrics/**',\n            FORMAT = 'PARQUET'\n        ) as consolidated_data\n    ) \nAS combined_data;",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "blockpulse_db",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/04_crypto_asset_table_in_cetas')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- This is auto-generated code\nSELECT\n    *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/crypto_asset/part-00000-d55de179-4dda-4f6a-b116-91f7392c4942-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS crypto_asset_table",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/05_date_dim_table')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/dim_date/part-00003-968c12b4-7ef6-403a-954b-f58bcf7eddf7-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS date_dimension_table\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		}
+	]
+}
