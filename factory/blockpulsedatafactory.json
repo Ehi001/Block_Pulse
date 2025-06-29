@@ -1,0 +1,9 @@
+{
+	"name": "blockpulsedatafactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f397b748-98ae-40aa-ba20-36e20b8b0cb4",
+		"tenantId": "bdb86d97-62a2-4561-91b2-203f79261118"
+	}
+}

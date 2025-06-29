@@ -1,0 +1,21 @@
+{
+	"name": "coingeckorawdata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "blockpulsebronzestoragelinkservice",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "crypto_data.json",
+				"folderPath": "bronze",
+				"fileSystem": "blockpulsecontainer"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,13 @@
+{
+	"name": "coingeckoapilink",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "blockpulse_data_pipeline_trigger",
+	"properties": {
+		"description": "Starts the pipeline",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "blockpulse_etl_pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2025-06-22T20:00:00",
+				"endTime": "2025-06-29T05:32:00",
+				"timeZone": "Mountain Standard Time"
+			}
+		}
+	}
+}

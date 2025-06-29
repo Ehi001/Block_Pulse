@@ -1,0 +1,339 @@
+{
+	"name": "blockpulse_etl_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy from coingecko API",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"path": "$['id']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['symbol']"
+								},
+								"sink": {
+									"path": "$['symbol']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"path": "$['name']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['image']"
+								},
+								"sink": {
+									"path": "$['image']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['current_price']"
+								},
+								"sink": {
+									"path": "$['current_price']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['market_cap']"
+								},
+								"sink": {
+									"path": "$['market_cap']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['market_cap_rank']"
+								},
+								"sink": {
+									"path": "$['market_cap_rank']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['fully_diluted_valuation']"
+								},
+								"sink": {
+									"path": "$['fully_diluted_valuation']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['total_volume']"
+								},
+								"sink": {
+									"path": "$['total_volume']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['high_24h']"
+								},
+								"sink": {
+									"path": "$['high_24h']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['low_24h']"
+								},
+								"sink": {
+									"path": "$['low_24h']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['price_change_24h']"
+								},
+								"sink": {
+									"path": "$['price_change_24h']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['price_change_percentage_24h']"
+								},
+								"sink": {
+									"path": "$['price_change_percentage_24h']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['market_cap_change_24h']"
+								},
+								"sink": {
+									"path": "$['market_cap_change_24h']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['market_cap_change_percentage_24h']"
+								},
+								"sink": {
+									"path": "$['market_cap_change_percentage_24h']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['circulating_supply']"
+								},
+								"sink": {
+									"path": "$['circulating_supply']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['total_supply']"
+								},
+								"sink": {
+									"path": "$['total_supply']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['max_supply']"
+								},
+								"sink": {
+									"path": "$['max_supply']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ath']"
+								},
+								"sink": {
+									"path": "$['ath']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ath_change_percentage']"
+								},
+								"sink": {
+									"path": "$['ath_change_percentage']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ath_date']"
+								},
+								"sink": {
+									"path": "$['ath_date']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['atl']"
+								},
+								"sink": {
+									"path": "$['atl']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['atl_change_percentage']"
+								},
+								"sink": {
+									"path": "$['atl_change_percentage']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['atl_date']"
+								},
+								"sink": {
+									"path": "$['atl_date']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['roi']['times']"
+								},
+								"sink": {
+									"path": "$['roi']['times']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['roi']['currency']"
+								},
+								"sink": {
+									"path": "$['roi']['currency']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['roi']['percentage']"
+								},
+								"sink": {
+									"path": "$['roi']['percentage']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['last_updated']"
+								},
+								"sink": {
+									"path": "$['last_updated']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "coingeckoapidataset",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "coingeckorawdata",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "bronze_to_silver_transform",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Copy from coingecko API",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ehidiamen1@gmail.com/blockpulsebronzetosilver_notebook"
+				},
+				"linkedServiceName": {
+					"referenceName": "blockpulsebronzetosilverlinkservice",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "silver_to_gold_transform",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "bronze_to_silver_transform",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ehidiamen1@gmail.com/blockpulsesilvertogoldworkspace"
+				},
+				"linkedServiceName": {
+					"referenceName": "blockpulsesilvertogoldlinkservice",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-06-21T04:10:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
