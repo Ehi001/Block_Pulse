@@ -673,7 +673,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "-- This is auto-generated code\nSELECT\n    *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/crypto_asset/part-00000-d55de179-4dda-4f6a-b116-91f7392c4942-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS crypto_asset_table",
+					"query": "-- USE CETAS (create external table as select) to write the result to a single file\nIF OBJECT_ID('dbo.block_pulse_crypto_asset_dim_table', 'U') IS NOT NULL\n    DROP EXTERNAL TABLE dbo.block_pulse_crypto_asset_dim_table\n\nCREATE EXTERNAL TABLE [dbo].[block_pulse_crypto_asset_dim_table]\nWITH (\n    LOCATION = \n    'blockpulsecontainer/crypto_asset',\n    DATA_SOURCE = [block_pulse_datasource],\n    FILE_FORMAT = [ParquetFileFormat]\n)\nAS\n\nSELECT\n    *\nFROM(\n    SELECT *\n    FROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/crypto_asset/part-00000-d55de179-4dda-4f6a-b116-91f7392c4942-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS crypto_asset_table\n) \nAS crypto_asset_dim_table;",
 					"metadata": {
 						"language": "sql"
 					},
@@ -693,7 +693,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/dim_date/part-00003-968c12b4-7ef6-403a-954b-f58bcf7eddf7-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS date_dimension_table\n\n",
+					"query": "-- USE CETAS (create external table as select) to write the result to a single file\n\nIF OBJECT_ID('dbo.block_pulse_date_dim_table', 'U') IS NOT NULL\n    DROP EXTERNAL TABLE dbo.block_pulse_date_dim_table\n\nCREATE EXTERNAL TABLE [dbo].[block_pulse_date_dim_table]\nWITH (\n    LOCATION = \n    'blockpulsecontainer/date_dim',\n    DATA_SOURCE = [block_pulse_datasource],\n    FILE_FORMAT = [ParquetFileFormat]\n)\nAS\n\nSELECT\n    *\nFROM(\nSELECT\n     *\nFROM\n    OPENROWSET(\n        BULK 'https://blockpulsestorage.dfs.core.windows.net/blockpulsecontainer/gold/dim_date/part-00003-968c12b4-7ef6-403a-954b-f58bcf7eddf7-c000.snappy.parquet',\n        FORMAT = 'PARQUET'\n    ) AS date_dimension_table\n)\nAS date_dim_table",
 					"metadata": {
 						"language": "sql"
 					},
