@@ -20,15 +20,15 @@ Started in 2014, CoinGecko is the world's largest independent crypto data aggreg
 CoinGecko Pro API now serves on-chain DEX data (Beta) across 200+ blockchain networks, 1,500+ decentralized exchanges (DEXes), and 6M+ tokens, powered by GeckoTerminal. Try it out for free: GeckoTerminal Public API
 Thousands of forward-thinking projects, Web3 developers, researchers, institutions, and enterprises use our API to obtain price feeds, market data, metadata, and historical data of crypto assets, NFTs, and exchanges.
 Here are some of the common use cases for clients who use CoinGecko API:
-•	Crypto Exchanges (CEX, DEX), Trading Apps
-•	Wallets (Hot, Cold)
-•	Data Aggregator, Crypto Screener, Analytics Dashboard
-•	Block Explorer, Portfolio Tracker
-•	DeFi Protocols, NFT Marketplaces, Digital Bank
-•	Backtesting Trading Strategy
-•	Accounting, Tax, Audit, HR Payroll
-•	Research & Analysis: Media, Institution, Academic, VC, Financial
-•	Oracles, Bots, Payments, E-commerce
+*	Crypto Exchanges (CEX, DEX), Trading Apps
+*	Wallets (Hot, Cold)
+*	Data Aggregator, Crypto Screener, Analytics Dashboard
+*	Block Explorer, Portfolio Tracker
+*	DeFi Protocols, NFT Marketplaces, Digital Bank
+*	Backtesting Trading Strategy
+*	Accounting, Tax, Audit, HR Payroll
+*	Research & Analysis: Media, Institution, Academic, VC, Financial
+*	Oracles, Bots, Payments, E-commerce
 
 
 
@@ -41,10 +41,10 @@ Here are some of the common use cases for clients who use CoinGecko API:
 - **Source**: Cryptocurrency market data from public REST API (e.g., CoinGecko)
 - **Ingestion**: API data fetched daily into the Bronze layer
 - **Processing**: Cleaned and transformed into structured Silver and Gold layers
-- **Storage**: Data is stored in **Azure Data Lake Gen2** using the **Delta Lake format**
-- **Presentation**: Served to **Power BI** via **Azure Synapse Analytics**
 - **Design**: Follows the **Medallion architecture** with **Slowly Changing Dimension (SCD) Type 2** logic
-
+- **Storage**: Data is stored in **Azure Data Lake Gen2** using the **Delta Lake format**
+- **Trigger**: Pipeline is trigerred to run everyday at 8:00PM MST everyday on Azure Data Factory
+- **Presentation**: Served to **Power BI** via **Azure Synapse Analytics**
 ---
 
 
