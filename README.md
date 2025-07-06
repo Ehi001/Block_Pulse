@@ -105,15 +105,21 @@ Here are some of the common use cases for clients who use CoinGecko API:
 
 ## 📊 Dashboard
 
-![image](https://github.com/user-attachments/assets/53b10a0c-4b59-4e67-8fa6-844b850e5197)
+![image](https://github.com/user-attachments/assets/16ca9c7d-8edb-4a53-affb-b0a21d0cd104)
 
-![image](https://github.com/user-attachments/assets/9d5071e2-afd5-473f-a25f-673ac77c44ff)
+![image](https://github.com/user-attachments/assets/98a418b0-1d06-4083-9b31-9bb6ac89a281)
 
-![image](https://github.com/user-attachments/assets/16c3e9fb-d829-466f-8f3c-e53145eea261)
+![image](https://github.com/user-attachments/assets/f1733c9f-65cf-4336-9eb4-c9a50f681b39)
 
-![image](https://github.com/user-attachments/assets/16394a52-616d-4473-bb05-8f964aac512a)
+![image](https://github.com/user-attachments/assets/fad34e46-2ec5-4855-a0d8-161a9b3b7628)
 
-![image](https://github.com/user-attachments/assets/cb2fce14-fe6d-4d81-9496-63b57eed8ff4)
+![image](https://github.com/user-attachments/assets/8ccb8c39-cc74-41c1-b2bb-01b8a6cf4f2c)
+
+
+
+
+
+
 
  
 ---
