@@ -172,7 +172,7 @@ Here are some of the common use cases for clients who use CoinGecko API:
 ---
 
 ### API RAW DATE SCHEMA
-  ![image](https://github.com/user-attachments/assets/8c782276-7468-458b-be56-3d226c50a71c)
+![image](https://github.com/user-attachments/assets/8c782276-7468-458b-be56-3d226c50a71c)
 ---
 ### TRANSFORMED DATA 
 The final ERD is shown below, it’s a star schema that has a fact table (crypto_metrics) and two dimension tables (crypto_asset and date)
@@ -184,5 +184,14 @@ AZURE SYNAPSE SCREEN SHOT
  
 AZURE DATA FACTORY SCREEN SHOT
 ![image](https://github.com/user-attachments/assets/15537b8f-5b0f-4a1c-b963-88b5eb2d54b6)
+
+AZURE DATA FACTORY PIPELINE RUNS
+![image](https://github.com/user-attachments/assets/0a6be7e5-758f-46fa-a716-e0c4b73472d6)
+
+AZURE DATA FACTORY TRIGGER RUNS
+![image](https://github.com/user-attachments/assets/c77404c0-8f96-433f-b7bb-225fce3f9e25)
+
+
+
  
 
